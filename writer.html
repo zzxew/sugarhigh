@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+    <style>
+    img { display : block;
+        margin : auto; }
+        *{ font-family: 'Gowun Batang', serif; }
+  </style>
+  <a href="http://localhost/">
+    <img src = "http://localhost/logo" width="800" height="250">
+    </a>
+  </head>
+  <body>
+    <a href="http://localhost/search"> <img src = "http://localhost/srbutton" width = "80" height="40"></a>
+    <a href="http://localhost/community"> <img src = "http://localhost/combutton" width = "100" height="48"> </a>
+    <form action = "/requestconfirm" method="post">
+    <p style="text-align: center;">
+        code : <input type="number" id="code" name="코드" size="10" min="1" placeholder="0은 코드로 사용 불가"
+        onfocus="this.placeholder=''" onblur="this.placeholder='0은 코드로 사용 불가'">
+        <input type="button" id="duplicate" name="중복확인" value="중복확인">
+        <script>
+          let flag=true;
+          document.getElementById("duplicate").onclick = function() {
+         const url = 'http://localhost/request';
+           fetch(url)
+           .then((response) => response.json())
+           .then((data)=>{
+             data.forEach(element => {
+              if(element.code===Number(document.getElementById('code').value)) { flag=false; }
+              if(document.getElementById('code').value=="") { flag=false; }
+           });
+           if(flag==true) { alert("사용가능한 코드입니다.");}
+           else{ alert("사용할 수 없는 코드입니다."); flag=true; }
+           })
+        }
+        </script>
+      </p>
+      <p style="text-align: center;">
+        이름 : <input type="text" id="nickname" name="이름" size="30" placeholder="코드 중복확인을 눌러주세요!"
+        onfocus="this.placeholder=''" onblur="this.placeholder='코드 중복확인을 눌러주세요!'">
+      </p>
+      <p style="text-align: center;">
+        <textarea name="내용" id="request" rows="10" cols="37" placeholder="정보 요청 / 수정 등 요청 내용을 입력해주세요."
+        onfocus="this.placeholder=''" onblur="this.placeholder='정보 요청 / 수정 등 요청 내용을 입력해주세요.'"></textarea>
+      </p>
+      <p style = "text-align: center"><input type = "submit" id="write" value="완료"></input></p>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<div sytle="text-align:center; display:block;">
+  <input type = "button" id="show" value="검색결과 확인" style=" margin:auto; font-size: 25pt; display: block;"></input>
+<script>
+  document.getElementById("show").onclick = function() {
+    while(document.getElementById("result").rows.length>1){ document.getElementById("result").deleteRow(1); }
+         const url = 'http://localhost/buffer';
+           fetch(url)
+           .then((response) => response.json())
+           .then((data)=>{
+            const tbody = document.querySelector('tbody');
+             data.forEach(element => {
+              const tr = document.createElement('tr');
+        tr.innerHTML = `<th>${element.brand}</th> <th>${element.name}</th> <th>${element.sugar}</th> <th>${element.kcal}</th> <th>${element.percentage}</th>`;
+        tbody.appendChild(tr);
+           });
+           })
+        }
+</script>

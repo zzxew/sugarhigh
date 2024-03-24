@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+    <style>
+    img { display : block;
+        margin : auto; }
+        *{ font-family: 'Gowun Batang', serif; }
+  </style>
+  <a href="http://localhost/">
+    <img src = "http://localhost/logo" width="800" height="250">
+  </a>
+  </head>
+  <body>
+    <a href="http://localhost/search"> <img src = "http://localhost/srbutton" width = "80" height="40"></a>
+      <a href="http://localhost/community"> <img src = "http://localhost/combutton" width = "100" height="48"> </a>
+
+<form action="/src" method="post">
+    <p style="text-align: center; font-size: 35pt">
+    <select name="field" id="field" style="font-size: 35pt;">
+      <option value="name">이름</option>
+      <option value="sugar">sugar</option>
+      <option value="kcal">kcal</option>
+      <option value="percentage">percentage</option>
+      <option value="color">color</option>
+      <option value="brand">brand</option>
+     </select>
+     <input type="text" name="searchbox" id="searchbox" size="30" style="font-size: 35pt;">
+    <input type = "submit" id="search" value="검색" style="font-size: 35pt;"></input>
+  </p>
+</form>
+  <p style = "font-size: 35pt; text-align: left;">! 검색 관련 팁 !</p>
+  <p style = "font-size: 16pt"> 1. 이름 / 브랜드 / 당류 / 칼로리 / 하루 당류 권장 비율 / 색상에 따라 검색 가능합니다. </p>
+  <p style = "font-size: 16pt">2. 영양정보 기준은 다음과 같습니다.</p>
+  <p> 하루 최대 당류 충족 비율은 국제 기준인 50g을 기준으로 계산된 값입니다. </p>
+  <p>스타벅스: 에스프레소(22ml) / 더블샷(207ml) / 럼샷 코르타도(숏, 237ml) / 더 그린쑥 라인 , 플럼 선셋(그란데, 473ml) / 이 외의 메뉴는 모두 톨(335ml)사이즈</p>
+    <p>공차: ice(473ml) / hot(414ml)</p>
+    <p>할리스 커피: 모든 메뉴 354ml</p>
+    <p>매머드 익스프레스: ice(20온즈, 약 590ml) / hot(16온즈, 약 473ml) / 매머드사이즈(32온즈, 약 946ml)</p>
+    <p>더벤티와 컴포즈 커피는 관련 표기 미확인 상태입니다.</p>
+    <p style = "font-size: 16pt">3. 색상표기는 black, brown, ivory, red, yellow, pink, green, purple, orange, blue 로만 표기되어있습니다.</p>
+    <p style = "font-size: 16pt"> 4. 당류, 칼로리, 하루 당류 권장 비율 카테고리는 숫자로만 검색이 가능하며, 검색값 이하의 메뉴를 출력합니다. </p>
+    <p> ex. '34.5' : 당류 34.5g이하의 메뉴 출력 | '100' : 하루 당류 권장 비율 100% 이하의 메뉴 출력</p>
+    <p style = "font-size: 16pt"> 5. 오타 및 관련 내용 오류에 관해서는 게시판에 글을 작성하여 수정을 요청해주세요.</p>
+
+  <thead>
+    <table id="result" border="1" align = "center">
+    <tr>
+    <th>브랜드</th>
+     <th>이름</th>
+     <th>당류</th>
+     <th>칼로리</th>
+     <th>하루 최대 당류 충족 비율(%)</th> 
+    </tr>
+   </thead>
+  <tbody>
+  <script>
+    const url = 'http://localhost/buffer';
+    fetch(url)
+    .then((response) => response.json())
+    .then((data)=>{
+      const tbody = document.querySelector('tbody');
+      data.forEach(element => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<th>${element.brand}</th> <th>${element.name}</th> <th>${element.sugar}</th> <th>${element.kcal}</th> <th>${element.percentage}</th>`;
+        tbody.appendChild(tr);
+    });
+    })
+  </script>
+  </tbody>
+</table>
+  </body>
+</html>

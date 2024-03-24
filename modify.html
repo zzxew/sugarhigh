@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+    <style>
+    img { display : block;
+        margin : auto; }
+        *{ font-family: 'Gowun Batang', serif; }
+  </style>
+  <a href="http://localhost/">
+    <img src = "http://localhost/logo" width="800" height="250">
+    </a>
+  </head>
+  <body>
+    <p style = "font-size: 35pt; text-align: left;"> - 커뮤니티 글 삭제</p>
+    <p> 요청사항이 구현완료된 글은 삭제처리하여 게시판을 깔끔하게 유지합니다. </p>
+    <p> </p>
+    <form action="/comdelete" method="post">
+    <p>
+       삭제할 글(code) 입력 : <input type="text" name="where" size="10"> 
+        <input type = "submit" id="delete" value="삭제"></input>
+    </p>
+  </form>
+
+
+    <p style = "font-size: 35pt; text-align: left;"> - 내용 삭제</p>
+    <p> 필드 목록 / 값은 아래 내용확인을 통해 자세한 사항 확인 바랍니다.</p>
+    <p> 삭제후 혼동을 방지하기 위해 꼭 아래 mid 최종값을 업데이트 해주시기 바랍니다.</p>
+    <form action="/dbdelete" method="post">
+    <p>
+       삭제할 행(mid) 입력 : <input type="text" name="where" size="10"> 
+        <input type = "submit" id="delete" value="삭제"></input>
+    </p>
+  </form>
+  
+    <p style = "font-size: 35pt; text-align: left;"> - 내용 수정</p>
+    <p> 수정은 하나의 필드씩만 가능합니다.</p>
+    <p> 필드 목록 / 값은 아래 내용확인을 통해 자세한 사항 확인 바랍니다.</p>
+    <p> percentage의 계산은 아래 내용추가란을 통해 쉽게 계산할 수 있습니다.</p>
+    <p> 중복방지를 위해 mid값은 수정할 수 없습니다. 데이터베이스를 통해 직접 수정 바랍니다.</p>
+    <form action="/dbupdate" method="post">
+    <p>
+      수정할 필드 : 
+      <select name="field" id="field">
+        <option value="name">name</option>
+        <option value="sugar">sugar</option>
+        <option value="kcal">kcal</option>
+        <option value="percentage">percentage</option>
+        <option value="color">color</option>
+        <option value="brand">brand</option>
+       </select>
+       / 수정할 필드 값: <input type="text" name="field2" size="30"> 
+       / 조건(mid) 입력 : <input type="text" name="where" size="10"> 
+         <input type = "submit" id="update" value="수정"></input>
+    </p>
+  </form>
+
+    <p style = "font-size: 35pt; text-align: left;"> - 내용 추가</p>
+    <p> 스타벅스(1) : 107 / 공차(2) : 75 / 할리스(3) : 61 / 더벤티(4) : 109 / 컴포즈(5) : 59 / 매머드익스프레스(6) : 121 (2023.05.10 기준) </p>
+    <p> percentage 계산: <input type="text" id="res" size="10"> <input type = "button" id="calculate" value="계산"></input>
+    <script>
+      document.getElementById("calculate").onclick = function(){
+        var input = parseInt(document.getElementById("res").value);
+        const output = (input/50)*100;
+        alert(output); }
+    </script>
+    </p>
+<div>
+    <table>
+    <thead>
+      <tr>
+        <th>mid</th>
+        <th>name</th>
+        <th>sugar</th>
+        <th>kcal</th>
+        <th>percentage</th>
+        <th>color</th>
+        <th>brand</th>
+      </tr>
+    </thead>
+    <form action="/dbinsert" method="post">
+        <tr>
+        <td><p><input type="number" id="mid" name="mid"></p></td>
+        <td><p><input type="text" id="name" name="name" autocomplete="off"></p></td>
+        <td><p><input type="number" id="sugar" name="sugar" step="0.01"></p></td>
+        <td><p><input type="number" id="kcal" name="kcal" step="0.01"></p></td>
+        <td><p><input type="number" id="percentage" name="percentage" step="0.01"></p></td>
+        <td><p><input type="text" id="color" name="color" autocomplete="off"></p></td>
+        <td><p><input type="text" id="brand" name="brand" autocomplete="off"></p></td>
+        <td><p><input type="submit" id="plus" name ="plus" style="width: 50pt; height: 20pt;" value="추가"></p></input></td>
+        </tr>
+      </form>
+    </table>
+  </div>
+      
+      <button id="confirm">내용 확인</button>
+      <table id="result" border="1">
+        <thead>
+        <tr>
+         <th>mid</th>
+         <th>name</th>
+         <th>sugar</th>
+         <th>kcal</th>
+         <th>percentage</th>
+         <th>color</th>
+         <th>brand</th>
+         </tr>
+        </thead>
+    <tbody id = "this">
+      <script>
+        const show = document.getElementById("confirm");
+      show.onclick = function() {
+        while(document.getElementById("result").rows.length>1){ document.getElementById("result").deleteRow(1); }
+         const url = 'http://localhost/menu';
+           fetch(url)
+           .then((response) => response.json())
+           .then((data)=>{
+             const tbody = document.getElementById("this");
+             data.forEach(element => {
+               const tr = document.createElement('tr');
+               tr.innerHTML = `<th>${element.mid}</th> <th>${element.name}</th> <th>${element.sugar}</th> <th>${element.kcal}</th> <th>${element.percentage}</th> <th>${element.color}</th> <th>${element.brand}</th>`;
+               tbody.appendChild(tr);
+           });
+           })
+        }
+      </script>
+      </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
